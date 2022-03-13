@@ -1,6 +1,7 @@
 package com.springboot.restfulblog.service.impl;
 
 import com.springboot.restfulblog.entity.Post;
+import com.springboot.restfulblog.exception.ResourceNotFoundException;
 import com.springboot.restfulblog.payload.PostDto;
 import com.springboot.restfulblog.repos.PostRepository;
 import com.springboot.restfulblog.service.PostService;
@@ -37,6 +38,12 @@ public class PostServiceImpl implements PostService {
 
         List<Post> posts = postRepository.findAll();
         return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+    }
+
+    @Override
+    public PostDto getPostById(long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        return mapToDto(post);
     }
 
     // Convert entity to DTO
