@@ -84,7 +84,7 @@ public class CommentServiceImpl implements CommentService {
 
         comment.setName(commentRequest.getName());
         comment.setEmail(commentRequest.getEmail());
-        comment.setMessageBody(commentRequest.getBody());
+        comment.setBody(commentRequest.getBody());
 
         Comment updatedComment = commentRepository.save(comment);
 
