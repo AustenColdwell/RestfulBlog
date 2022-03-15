@@ -6,6 +6,7 @@ import com.springboot.restfulblog.payload.PostDto;
 import com.springboot.restfulblog.payload.PostResponse;
 import com.springboot.restfulblog.repos.PostRepository;
 import com.springboot.restfulblog.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,10 @@ public class PostServiceImpl implements PostService {
     // No need to annotate with @ Autowired because class is bean with only one constructor
     private PostRepository postRepository;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    private ModelMapper mapper;
+
+    public PostServiceImpl(PostRepository postRepository,ModelMapper mapper) {
+        this.mapper = mapper;
         this.postRepository = postRepository;
     }
 
@@ -89,22 +93,28 @@ public class PostServiceImpl implements PostService {
 
     // Convert entity to DTO
     private PostDto mapToDto(Post post){
-        PostDto postDto = new PostDto();
-        postDto.setId(post.getId());
-        postDto.setTitle(post.getTitle());
-        postDto.setDescription(post.getDescription());
-        postDto.setContent(post.getContent());
+
+        PostDto postDto = mapper.map(post, PostDto.class);
+
+//        PostDto postDto = new PostDto();
+//        postDto.setId(post.getId());
+//        postDto.setTitle(post.getTitle());
+//        postDto.setDescription(post.getDescription());
+//        postDto.setContent(post.getContent());
 
         return postDto;
     }
 
     // Convert DTO to entity
     private Post mapToPost(PostDto postDto){
-        Post post = new Post();
-        post.setId(postDto.getId());
-        post.setTitle(postDto.getTitle());
-        post.setDescription(postDto.getDescription());
-        post.setContent(postDto.getContent());
+
+        Post post = mapper.map(postDto, Post.class);
+
+//        Post post = new Post();
+//        post.setId(postDto.getId());
+//        post.setTitle(postDto.getTitle());
+//        post.setDescription(postDto.getDescription());
+//        post.setContent(postDto.getContent());
 
         return post;
     }
